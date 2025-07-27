@@ -5,19 +5,21 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import SingupPage from './pages/SingupPage';
 import BookmarkPage from './pages/BookmarkPage';
+import Header from './component/Header';
 
 
 // src/App.js
 function App() {
   return (
-    <div>
+    <>
+      <Header />
       <Routes>
-        <Route path='/' element={<LoginPage />} />
+        <Route path='/' element={<MainPage/>}/>
+        <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SingupPage/>}/>
-        <Route path='/main' element={<MainPage/>}/>
         <Route path='/bookmark' element={<BookmarkPage/>}/>
       </Routes>
-    </div>
+      </>
   );
 }
 
