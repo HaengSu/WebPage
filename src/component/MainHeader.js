@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-function Header() {
+function MainHeader() {
     const [selectedOption, setSelectedOption] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
@@ -72,4 +72,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default MainHeader;

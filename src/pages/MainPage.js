@@ -18,7 +18,7 @@ const MainPage = () => {
                     flexDirection: 'row',
                     gap: '20'
                 }}>
-                    <h3 style={{ marginRight: '10px' }}>TestWord</h3>
+                    <h3 style={{marginLeft : '10px', marginRight: '10px' }}>TestWord</h3>
                     <p>명사</p>
                 </div>
 
@@ -53,7 +53,7 @@ const MainPage = () => {
                     flexDirection: 'row',
                     gap: '20'
                 }}>
-                    <h3 style={{ marginRight: '10px' }}>TestWord</h3>
+                    <h3 style={{ marginLeft : '10px', marginRight: '10px' }}>TestWord</h3>
                     <p>명사</p>
                 </div>
 

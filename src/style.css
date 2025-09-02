@@ -1,9 +1,17 @@
 .header {
-    background-color: #BDBDBD;
-    padding: 10px 20px;
+  background-color: #BDBDBD;
+  padding: 10px 20px;
 }
 
 .log {
-    color: black;
+  color: black;
   font-size: 24px;
+}
+
+.input-style {
+  margin-bottom: '20px';
+  padding: '10px';
+  width: '700px';
+  border: '1px solid #BDBDBD';
+  border-radius: '10px'
 }
