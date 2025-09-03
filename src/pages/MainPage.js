@@ -1,4 +1,6 @@
+import { Bookmark, BookmarkAddOutlined } from "@mui/icons-material";
 import react from "react";
+import { FaBeer } from "react-icons/fa";
 
 const MainPage = () => {
     return (
@@ -13,13 +15,21 @@ const MainPage = () => {
 
 
             <div style={{ backgroundColor: 'lightgray' }}>
-                <div style={{
+                 <div style={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    gap: '20'
+                    justifyContent: 'space-between',
                 }}>
-                    <h3 style={{marginLeft : '10px', marginRight: '10px' }}>TestWord</h3>
-                    <p>명사</p>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '20'
+                    }}>
+                        <h3 style={{ marginLeft: '10px', marginRight: '10px' }}>TestWord</h3>
+                        <p>명사</p>
+                    </div>
+                    <h3 style={{marginRight : '20px'}}><BookmarkAddOutlined /></h3>
+
+
                 </div>
 
                 <div style={{
@@ -50,11 +60,19 @@ const MainPage = () => {
             <div style={{ backgroundColor: 'lightgray' }}>
                 <div style={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    gap: '20'
+                    justifyContent: 'space-between',
                 }}>
-                    <h3 style={{ marginLeft : '10px', marginRight: '10px' }}>TestWord</h3>
-                    <p>명사</p>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '20'
+                    }}>
+                        <h3 style={{ marginLeft: '10px', marginRight: '10px' }}>TestWord</h3>
+                        <p>명사</p>
+                    </div>
+                    <h3 style={{marginRight : '20px'}}><BookmarkAddOutlined /></h3>
+
+
                 </div>
 
                 <div style={{
@@ -72,7 +90,6 @@ const MainPage = () => {
                     <p style={{ marginRight: '10px' }}>테스트 단어_4</p>
                 </div>
             </div>
-
         </div>
 
     )

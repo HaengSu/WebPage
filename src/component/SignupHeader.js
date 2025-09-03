@@ -21,7 +21,15 @@ function LoginHeader() {
         }}
         >
             <h1 onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>PICKAWORD</h1>
-        
+            <div style={{ display: 'flex', alignItems: 'center'}}>
+                <p>Already have an account? </p>
+                <nav>
+                    <Button href="/signup" style={{
+                        margin: '0 20px', color: 'blue'
+                    }}>Log in</Button>
+                </nav>
+            </div>
+
         </header>
     );
 }

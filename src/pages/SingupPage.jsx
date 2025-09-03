@@ -2,7 +2,7 @@ import { Button, MenuItem, Select } from "@mui/material";
 import react, { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-const LoginPage = () => {
+const SingupPage = () => {
     const [inputText, setInputText] = useState({
         email: '',
         nickname: '',
@@ -150,4 +150,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default SingupPage

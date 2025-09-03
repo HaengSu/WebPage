@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
-import LoginHeader from "./LoginHeader";
+import SignupHeader from "./SignupHeader";
+import LoginHeader from "./LoginHeader"
 import MainHeader from "./MainHeader";
 
 
@@ -7,7 +8,8 @@ const Layout = ({ children }) => {
     const location = useLocation();
 
     let header;
-    if (location.pathname === '/') header = <MainHeader />;
+    if (location.pathname === '/' || location.pathname === '/bookmark') header = <MainHeader />;
+    if (location.pathname === '/signup') header = <SignupHeader />;
     if (location.pathname === '/login') header = <LoginHeader />;
 
 
