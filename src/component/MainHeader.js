@@ -34,7 +34,8 @@ function MainHeader() {
             color: 'black'
         }}
         >
-            <h1 onClick={() => navigate('/')} style={{cursor : 'pointer'}}>PICKAWORD</h1>
+            {/* <h1 onClick={() => navigate('/')} style={{cursor : 'pointer'}}>PICKAWORD</h1> */}
+            <h1 onClick={() => navigate('/bookmark')} style={{cursor : 'pointer'}}>PICKAWORD</h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Select
                     displayEmpty
