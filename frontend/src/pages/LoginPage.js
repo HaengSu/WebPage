@@ -31,7 +31,7 @@ const LoginPage = () => {
             <div style={{ display: 'flex', alignItems: 'center' ,marginBottom: '30px'}}>
                 <p>Don’t have and account yet? </p>
                 <nav>
-                    <Button href="/login" style={{
+                    <Button href="/signup" style={{
                         margin: '0 20px', color: 'blue',
                     }}> Sign up now</Button>
                 </nav>
@@ -41,6 +41,7 @@ const LoginPage = () => {
                 value={inputText.nickname}
                 onChange={handleChange}
                 placeholder="email"
+                maxLength={40}
                 style={{
                     marginBottom: '30px', padding: '15px',
                     width: '700px',
