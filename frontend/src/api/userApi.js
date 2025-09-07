@@ -17,3 +17,11 @@ export function loginUser(user) {
         body : JSON.stringify(user)
     });
 }
+
+export function updateUserLevel(user) {
+    console.log('new level = ',user.level);
+    return request(`/auth/user?email=${encodeURIComponent(user.email)}`, {
+        method : 'PATCH',
+        body : JSON.stringify({level : user.level}),
+    });
+}

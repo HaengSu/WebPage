@@ -5,7 +5,7 @@ import { useUser } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-    const {setUser} = useUser();
+    const { setUser } = useUser();
     const navigation = useNavigate();
     const [inputText, setInputText] = useState({
         email: '',
@@ -81,7 +81,7 @@ const LoginPage = () => {
                         password: inputText.password
                     }
 
-                    const res = loginUser(user)
+                    loginUser(user)
                         .then((result) => {
                             console.log('user = ', result.user);
                             setUser(result.user);

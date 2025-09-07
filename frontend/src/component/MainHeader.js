@@ -4,6 +4,7 @@ import { Select, MenuItem, Button } from "@mui/material";
 import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../UserContext";
+import { updateUserLevel } from "../api/userApi";
 
 
 
@@ -53,7 +54,24 @@ function MainHeader() {
                 <Select
                     displayEmpty
                     value={selectedOption}
-                    onChange={(e) => setSelectedOption(e.target.value)}
+                    onChange={(e) => {
+                        setSelectedOption(e.target.value)
+
+                        const data = {
+                            email: user.email,
+                            level: e.target.value
+                        }
+
+                        updateUserLevel(data)
+                            .then((result) => {
+                                console.log('user = ', result);
+                            })
+                            .catch((err) => {  
+                                console.error('업데이트 실패', err.message);
+                            });
+
+                    }
+                    }
                     variant="standard"
                     disableUnderline
                     open={open}
@@ -74,12 +92,12 @@ function MainHeader() {
                     <div style={{ display: 'flex' }}>
                         {
                             user ? (
-                                <p style={{ margin: '0 10px', color: 'black', padding: '5px 30px', cursor :'pointer' }} onClick={() => navigate('/bookmark')}>단어장</p>
+                                <p style={{ margin: '0 10px', color: 'black', padding: '5px 30px', cursor: 'pointer' }} onClick={() => navigate('/bookmark')}>단어장</p>
                             ) : (
                                 <Button href="/login" style={{ margin: '0 10px', color: 'black', border: '1px solid black', padding: '5px 30px' }}>Log In</Button>
                             )
                         }
-                        <Button onClick= {() => {
+                        <Button onClick={() => {
                             setUser(null);
                             navigate('/');
                         }} style={{ margin: '0 20px', color: 'black', border: '1px solid black', padding: '5px 25px' }}>
