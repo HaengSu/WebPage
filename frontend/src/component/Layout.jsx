@@ -12,9 +12,6 @@ const Layout = ({ children }) => {
     if (location.pathname === '/signup') header = <SignupHeader />;
     if (location.pathname === '/login') header = <LoginHeader />;
 
-
-    console.log(`${location.pathname === '/login'}`)
-
     return (
         <div
             style={{
