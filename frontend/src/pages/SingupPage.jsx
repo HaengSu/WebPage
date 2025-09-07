@@ -2,10 +2,11 @@ import { Button, MenuItem, Select } from "@mui/material";
 import react, { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { registerUser, getUsers } from '../api/userApi';
-
+import { useNavigate } from "react-router-dom";
 
 
 const SingupPage = () => {
+    const navigate = useNavigate();
     const [inputText, setInputText] = useState({
         email: '',
         nickname: '',
@@ -202,10 +203,12 @@ const SingupPage = () => {
                         }
                         const response = registerUser(user)
                             .then((res) => {
-                                console.log(`회원가입 성공 : `,JSON.stringify(res, null, 2));
+                                console.log(`회원가입 성공 : `, JSON.stringify(res, null, 2));
+                                alert(`회원가입 성공`);
+                                navigate('/login')
                             })
                             .catch((err) => {
-                                console.error('회원가입 실패 :',err.message);
+                                console.error('회원가입 실패 :', err.message);
                                 alert(`회원가입 실패 : ${err.message}`);
                             });
                     }

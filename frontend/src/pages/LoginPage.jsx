@@ -1,18 +1,22 @@
-import { Button } from "@mui/material";
+import { Button, emphasize } from "@mui/material";
 import { useState } from "react";
+import { loginUser, registerUser } from '../api/userApi';
+import { useUser } from '../UserContext';
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+    const {setUser} = useUser();
+    const navigation = useNavigate();
     const [inputText, setInputText] = useState({
         email: '',
         password: '',
     });
     const handleChange = (e) => {
-        const { name, value } = (e) => e.target;
+        const { name, value } = e.target;
         setInputText((prev) => ({
             ...prev,
             [name]: value
         }))
-        setInputText(e.target.value);
     }
 
 
@@ -28,7 +32,7 @@ const LoginPage = () => {
                 Welcome to PickAWord
             </h2>
 
-            <div style={{ display: 'flex', alignItems: 'center' ,marginBottom: '30px'}}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px' }}>
                 <p>Don’t have and account yet? </p>
                 <nav>
                     <Button href="/signup" style={{
@@ -40,6 +44,7 @@ const LoginPage = () => {
             <input type='text'
                 value={inputText.nickname}
                 onChange={handleChange}
+                name="email"
                 placeholder="email"
                 maxLength={40}
                 style={{
@@ -53,6 +58,7 @@ const LoginPage = () => {
             <input type='text'
                 value={inputText.nickname}
                 onChange={handleChange}
+                name="password"
                 placeholder="password"
                 style={{
                     marginBottom: '25px', padding: '15px',
@@ -68,8 +74,24 @@ const LoginPage = () => {
                 marginTop: '60px',
                 width: '200px',
                 padding: '15px'
+            }}
+                onClick={() => {
+                    const user = {
+                        email: inputText.email,
+                        password: inputText.password
+                    }
 
-            }}>Log in</Button>
+                    const res = loginUser(user)
+                        .then((result) => {
+                            console.log('user = ', result.user);
+                            setUser(result.user);
+                            navigation('/');
+                        })
+                        .catch((err) => {
+                            alert('로그인 실패 : ' + err.message);
+                        }
+                        )
+                }}>Log in</Button>
         </div>
     )
 }
