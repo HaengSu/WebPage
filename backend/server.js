@@ -8,7 +8,16 @@ app.use(cors());
 app.use(express.json());
 
 const authRoutes = require('./routes/auth');
-app.use('/auth',authRoutes);
+app.use('/api/v1',authRoutes);
+
+const usersRoutes = require('./routes/user');
+app.use('/api/v1',usersRoutes );
+
+const wordsRoutes = require('./routes/words');
+app.use('/api/v1',wordsRoutes );
+
+const bookmarsRoutes = require('./routes/bookmarks');
+app.use('/api/v1',bookmarsRoutes );
 
 
 app.listen(PORT, () => {
