@@ -1,7 +1,7 @@
 import { Button, MenuItem, Select } from "@mui/material";
 import react, { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { registerUser, getUsers } from '../api/userApi';
+import { registerUser, getUsers, deleteUser } from '../api/userApi';
 import { useNavigate } from "react-router-dom";
 
 
@@ -57,6 +57,10 @@ const SingupPage = () => {
         return res;
     }
 
+    deleteUser({ email: '123' }).then((res) => {
+        console.log(`유저 삭제 성공 : `, JSON.stringify(res, null, 2));
+     
+    })
 
 
     return (

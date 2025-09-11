@@ -1,6 +1,8 @@
 import { Bookmark, BookmarkAddOutlined } from "@mui/icons-material";
 import react from "react";
 import { FaBeer } from "react-icons/fa";
+import { getWord, deleteWord, saveWord } from "../api/WordApi";
+import { getAllBookmarks, patchBookamrk, deleteBookmark, updateBookamrk } from "../api/BookmarkApi";
 
 const MainPage = () => {
     return (
@@ -15,7 +17,7 @@ const MainPage = () => {
 
 
             <div style={{ backgroundColor: 'lightgray' }}>
-                 <div style={{
+                <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
                 }}>
@@ -27,7 +29,7 @@ const MainPage = () => {
                         <h3 style={{ marginLeft: '10px', marginRight: '10px' }}>TestWord</h3>
                         <p>명사</p>
                     </div>
-                    <h3 style={{marginRight : '20px'}}><BookmarkAddOutlined /></h3>
+                    <h3 style={{ marginRight: '20px' }}><BookmarkAddOutlined /></h3>
 
 
                 </div>
@@ -70,7 +72,7 @@ const MainPage = () => {
                         <h3 style={{ marginLeft: '10px', marginRight: '10px' }}>TestWord</h3>
                         <p>명사</p>
                     </div>
-                    <h3 style={{marginRight : '20px'}}><BookmarkAddOutlined /></h3>
+                    <h3 style={{ marginRight: '20px' }}><BookmarkAddOutlined /></h3>
 
 
                 </div>

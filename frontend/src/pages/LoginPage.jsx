@@ -1,6 +1,7 @@
 import { Button, emphasize } from "@mui/material";
 import { useState } from "react";
-import { loginUser, registerUser } from '../api/userApi';
+import { registerUser } from '../api/userApi';
+import { loginUser } from "../api/AuthApi";
 import { useUser } from '../UserContext';
 import { useNavigate } from "react-router-dom";
 
@@ -88,9 +89,9 @@ const LoginPage = () => {
                             navigation('/');
                         })
                         .catch((err) => {
+                            console.error('로그인 실패 :', err.message);
                             alert('로그인 실패 : ' + err.message);
-                        }
-                        )
+                        })
                 }}>Log in</Button>
         </div>
     )

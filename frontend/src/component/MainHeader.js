@@ -44,12 +44,10 @@ function MainHeader() {
             justifyContent: "space-between",
             alignItems: "center",
             padding: "10px 20px",
-            // backgroundColor : '#282c89',
             color: 'black'
         }}
         >
             <h1 onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>PICKAWORD</h1>
-            {/* <h1 onClick={() => navigate('/bookmark')} style={{cursor : 'pointer'}}>PICKAWORD</h1> */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Select
                     displayEmpty
@@ -66,7 +64,7 @@ function MainHeader() {
                             .then((result) => {
                                 console.log('user = ', result);
                             })
-                            .catch((err) => {  
+                            .catch((err) => {
                                 console.error('업데이트 실패', err.message);
                             });
 
@@ -97,10 +95,24 @@ function MainHeader() {
                                 <Button href="/login" style={{ margin: '0 10px', color: 'black', border: '1px solid black', padding: '5px 30px' }}>Log In</Button>
                             )
                         }
-                        <Button onClick={() => {
-                            setUser(null);
-                            navigate('/');
-                        }} style={{ margin: '0 20px', color: 'black', border: '1px solid black', padding: '5px 25px' }}>
+                        <Button
+                            onClick={() => {
+                                if (user) {
+                                    // 로그아웃 처리
+                                    setUser(null);
+                                    navigate('/');
+                                } else {
+                                    // 회원가입 페이지로 이동
+                                    navigate('/signup');
+                                }
+                            }}
+                            style={{
+                                margin: '0 20px',
+                                color: 'black',
+                                border: '1px solid black',
+                                padding: '5px 25px',
+                            }}
+                        >
                             {user ? 'Logout' : 'Sign Up'}
                         </Button>
                     </div>

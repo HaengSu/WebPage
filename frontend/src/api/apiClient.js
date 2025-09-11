@@ -1,3 +1,5 @@
+import { ResetTvTwoTone } from "@mui/icons-material";
+
 export async function request(url, option = {}) {
     const response = await fetch(`http://localhost:5000${url}`, {
         headers : {
@@ -7,7 +9,10 @@ export async function request(url, option = {}) {
     });
 
     if(response.ok == false) {
-        throw new Error('API ERROR = '+ response.status);
+        const errorData = await response.json();
+        throw new Error(`status : ${response.status}\nmessage : ${errorData.error.message}`);
+
+        
     }
 
     return response.json();
