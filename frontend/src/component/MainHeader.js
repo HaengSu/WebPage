@@ -8,7 +8,8 @@ import { updateUserLevel } from "../api/userApi";
 
 
 
-function MainHeader() {
+function MainHeader({ onRefresh }) {
+
     const { user, setUser } = useUser();
     const [selectedOption, setSelectedOption] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,6 +55,7 @@ function MainHeader() {
                     value={selectedOption}
                     onChange={(e) => {
                         setSelectedOption(e.target.value)
+                        onRefresh();    // 메인페이지 데이터 변경을 위해 호출
 
                         const data = {
                             email: user.email,

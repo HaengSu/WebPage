@@ -1,0 +1,139 @@
+import { BookmarkAddOutlined } from "@mui/icons-material";
+import { useState, useEffect } from "react";
+import { extractWord } from "../api/WordApi";
+import { useUser } from "../UserContext";
+import { Button, CircularProgress } from "@mui/material";
+
+const MainPage = (refreshKey) => {
+  const [BBCWords, setBBCWords] = useState([]);
+  const [BBCIndex, setBBCIndex] = useState(0);
+  const [TIMESWords, setTIMESWords] = useState([]);
+  const [TIMESIndex, setTIMESIndex] = useState(0);
+
+  const [loadingBBC, setLoadingBBC] = useState(true);
+  const [loadingTimes, setLoadingTimes] = useState(true);
+
+  const { user } = useUser();
+  const BBC = "https://www.bbc.com/news";
+  const TIMES = "https://www.nytimes.com/";
+
+  useEffect(() => {
+    setLoadingTimes(true);
+    setLoadingBBC(true);
+    extractWord(BBC, user?.level || "초급", user?.purpose || "토익")
+      .then((res) => {
+        console.log("BBC 응답 =", res);
+        setBBCWords(res.words); // ✅ words 배열만 저장
+      })
+      .catch((err) => {
+        console.error(`BBC 크롤링 실패 : ${err}`);
+      })
+      .finally(() => {
+        setLoadingBBC(false);
+      });
+
+    extractWord(TIMES, user?.level || "초급", user?.purpose || "토익")
+      .then((res) => {
+        console.log("TIMES 응답 =", res);
+        setTIMESWords(res.words);
+      })
+      .catch((err) => {
+    console.error("❌ TIMES 크롤링 실패:", err);
+  })
+      .finally(() => {
+        setLoadingTimes(false);
+      });
+  }, [refreshKey]);
+
+  const renderWordCard = (words, index, setIndex, title, link, loading) => (
+    <div style={{ marginBottom: "50px" }}>
+      <h2>오늘의 {title} 추천 단어</h2>
+      <p>
+        <a href={link} target="_blank" rel="noopener noreferrer" style={{ fontSize: "12px" }}>
+          [{title} 원본 확인하기]
+        </a>
+      </p>
+
+      <div style={{ backgroundColor: "lightgray", padding: "20px" }}>
+        {loading ? (
+          <div style={{ display: "flex", justifyContent: "center", padding: "40px" }}>
+            <CircularProgress />
+          </div>
+        ) : words.length > 0 ? (
+          <>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+                <h2 style={{ margin: "0 10px" }}>{words[index].word}</h2>
+                <p style={{ marginTop: "30px" }}>{words[index].ps}</p>
+              </div>
+              <h3 style={{ marginRight: "20px" }}>
+                <BookmarkAddOutlined />
+              </h3>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                margin: "20px 100px",
+                justifyContent: "space-between",
+              }}
+            >
+              {words[index].meanings.map((m, i) => (
+                <p key={i} style={{ marginRight: "10px" }}>
+                  {m}
+                </p>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                style={{
+                  border: "1px solid black",
+                  color: "black",
+                  margin: "30px 100px 30px 0",
+                  width: "200px",
+                  background: "white",
+                  padding: "15px",
+                }}
+                onClick={() => {
+                  if (index === 0) return;
+                  setIndex(index - 1);
+                }}
+              >
+                이전
+              </Button>
+
+              <Button
+                style={{
+                  border: "1px solid black",
+                  color: "black",
+                  margin: "30px 0 30px 100px",
+                  width: "200px",
+                  background: "white",
+                  padding: "15px",
+                }}
+                onClick={() => {
+                  if (index === words.length - 1) return;
+                  setIndex(index + 1);
+                }}
+              >
+                다음
+              </Button>
+            </div>
+          </>
+        ) : (
+          <p>데이터 없음</p>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ margin: "0px 20px" }}>
+      {renderWordCard(BBCWords, BBCIndex, setBBCIndex, "BBC News", BBC, loadingBBC)}
+      {renderWordCard(TIMESWords, TIMESIndex, setTIMESIndex, "NY Times", TIMES, loadingTimes)}
+    </div>
+  );
+};
+
+export default MainPage;

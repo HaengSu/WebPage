@@ -19,3 +19,15 @@ export function deleteWord(wordId) {
         method : 'DELETE',
     });
 }
+
+export function extractWord(url,level, purpose) {
+    const query = new URLSearchParams({
+        url : url,
+        level : level,
+        purpose : purpose
+    }).toString();
+
+    return request(`/api/v1/extract-words?${query}`, {
+        method : 'GET',
+    })
+}

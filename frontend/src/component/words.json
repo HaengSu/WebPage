@@ -1,0 +1,104 @@
+{
+    "words": [
+        {
+            "word": "vow",
+            "meanings": [
+                "속이다",
+                "맹세하다",
+                "서약하다",
+                "맹세"
+            ],
+            "ps": "verb/noun"
+        },
+        {
+            "word": "surrender",
+            "meanings": [
+                "항복하다",
+                "자수하다",
+                "양보하다",
+                "합의하다"
+            ],
+            "ps": "verb"
+        },
+        {
+            "word": "martyr",
+            "meanings": [
+                "순교자",
+                "희생자",
+                "순교용사",
+                "희생"
+            ],
+            "ps": "noun"
+        },
+        {
+            "word": "resurgence",
+            "meanings": [
+                "부흥",
+                "재발견",
+                "재현",
+                "부활"
+            ],
+            "ps": "noun"
+        },
+        {
+            "word": "deploy",
+            "meanings": [
+                "배치하다",
+                "배포하다",
+                "운용하다",
+                "출전시키다"
+            ],
+            "ps": "verb"
+        },
+        {
+            "word": "candidacy",
+            "meanings": [
+                "후보자 자격",
+                "출마 자격",
+                "지망",
+                "후보 선출"
+            ],
+            "ps": "noun"
+        },
+        {
+            "word": "vying",
+            "meanings": [
+                "경쟁하는",
+                "경쟁하다",
+                "경합",
+                "갈망하는"
+            ],
+            "ps": "adjective/verb"
+        },
+        {
+            "word": "agony",
+            "meanings": [
+                "고통",
+                "괴로움",
+                "비통",
+                "사고"
+            ],
+            "ps": "noun"
+        },
+        {
+            "word": "defying",
+            "meanings": [
+                "도전",
+                "저항",
+                "모욕",
+                "도가"
+            ],
+            "ps": "verb"
+        },
+        {
+            "word": "fervent",
+            "meanings": [
+                "열렬한",
+                "정열적인",
+                "강한",
+                "열광적인"
+            ],
+            "ps": "adjective"
+        }
+    ]
+}

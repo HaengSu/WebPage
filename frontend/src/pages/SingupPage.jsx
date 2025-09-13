@@ -57,12 +57,6 @@ const SingupPage = () => {
         return res;
     }
 
-    deleteUser({ email: '123' }).then((res) => {
-        console.log(`유저 삭제 성공 : `, JSON.stringify(res, null, 2));
-     
-    })
-
-
     return (
         <div style={{
             display: 'flex',
