@@ -15,20 +15,30 @@ async function crawlArticle(url) {
 }
 
 async function extractWords(text, level, purpose) {
-    const prompt = `당신은 영어 단어 학습을 돕는 선생님입니다. 
-  사용자가 선택한 학습 목적은 "${purpose}"이고, 수준은 "${level}"입니다.
+    const prompt = `
+당신은 영어 단어 학습을 돕는 선생님입니다. 
+사용자가 선택한 학습 목적은 "${purpose}"이고, 수준은 "${level}"입니다.
 
-  아래 뉴스 기사 본문에서 ${purpose} 학습에 도움이 되는 영어 단어 10개를 뽑아주세요. 
-  ${level} 학습자에게 적합한 난이도로 선택해주세요.
+아래 뉴스 기사 본문에서 ${purpose} 학습에 도움이 되는 영어 단어를 무조건 10개 뽑아주세요. 
+${level} 학습자에게 적합한 난이도로 선택해주세요.
 
-  JSON 배열 형식으로 반환하며, 각 객체는 다음을 포함해야 합니다:
-  - "word": 영어 단어
-  - "meanings": 한국어 뜻을 3~4개 정도 배열(Array)로 작성 (예: ["행복", "기쁨", "만족", "즐거움"])
-  - "ps": 품사(명사, 동사, 형용사 등)는 영어로 작성
+ 출력 형식 규칙:
+- 반드시 **JSON 배열(JSON array)만 반환**
+- 마크다운 코드블록(예: \`\`\`json, \`\`\`) 절대 사용 금지
+- 불필요한 텍스트, 설명 없이 JSON만 출력
+- 단어의 뜻은 무조건 4개를 알려줄 것
+- 단어 뜻은 무조건 한글로 알려줄 것
+- 각 객체는 다음 구조여야 합니다:
+  {
+    "word": "영어 단어",
+    "meanings": ["뜻1", "뜻2", "뜻3", "뜻4"],
+    "ps": "품사 (영어, 예: noun, verb)"
+  }
 
-  기사 본문:
-  ${text}
+기사 본문:
+${text}
 `;
+
 
     const response = await client.chat.completions.create({
         model: 'gpt-3.5-turbo',
@@ -44,7 +54,7 @@ router.get('/extract-words', async (req, res) => {
         if (!url) return res.status(400).json({ error: 'url parameter required' });
 
         const articleText = await crawlArticle(url);
-        const words = await extractWords(articleText,level, purpose);
+        const words = await extractWords(articleText, level, purpose);
 
         res.json({ words: JSON.parse(words) });
 
