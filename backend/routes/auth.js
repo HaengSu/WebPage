@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt"); // 비밀번호 암호화 라이브러리
 const db = require('../db');
 
-router.post('auth/login', async (req, res) => {
+router.post('/auth/login', async (req, res) => {
   const { email, password } = req.body;
 
   if (email == false || password == false) {
