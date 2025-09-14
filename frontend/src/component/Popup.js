@@ -10,7 +10,8 @@ function Popup({ onClose }) {
             backgroundColor: '#88D9D9D9', // 반투명 배경
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            zIndex : 2000
         }}>
             <div style={{
                  backgroundColor: 'white',

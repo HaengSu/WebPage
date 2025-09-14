@@ -20,6 +20,7 @@ export function deleteWord(wordId) {
     });
 }
 
+//크롤링 관련 api
 export function extractWord(url,level, purpose) {
     const query = new URLSearchParams({
         url : url,

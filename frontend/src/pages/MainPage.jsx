@@ -1,49 +1,86 @@
 import { BookmarkAddOutlined } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { extractWord } from "../api/WordApi";
+import { patchBookamrk } from "../api/BookmarkApi";
 import { useUser } from "../UserContext";
 import { Button, CircularProgress } from "@mui/material";
+import data from "../component/words.json"
+import Popup from "../component/Popup";
 
 const MainPage = (refreshKey) => {
   const [BBCWords, setBBCWords] = useState([]);
   const [BBCIndex, setBBCIndex] = useState(0);
   const [TIMESWords, setTIMESWords] = useState([]);
   const [TIMESIndex, setTIMESIndex] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
-  const [loadingBBC, setLoadingBBC] = useState(true);
-  const [loadingTimes, setLoadingTimes] = useState(true);
+  // const [loadingBBC, setLoadingBBC] = useState(true);
+  // const [loadingTimes, setLoadingTimes] = useState(true);
+
 
   const { user } = useUser();
   const BBC = "https://www.bbc.com/news";
   const TIMES = "https://www.nytimes.com/";
 
+  // test
+  const [loadingBBC, setLoadingBBC] = useState(false);
+  const [loadingTimes, setLoadingTimes] = useState(false);
   useEffect(() => {
-    setLoadingTimes(true);
-    setLoadingBBC(true);
-    extractWord(BBC, user?.level || "초급", user?.purpose || "토익")
-      .then((res) => {
-        console.log("BBC 응답 =", res);
-        setBBCWords(res.words); // ✅ words 배열만 저장
-      })
-      .catch((err) => {
-        console.error(`BBC 크롤링 실패 : ${err}`);
-      })
-      .finally(() => {
-        setLoadingBBC(false);
-      });
-
-    extractWord(TIMES, user?.level || "초급", user?.purpose || "토익")
-      .then((res) => {
-        console.log("TIMES 응답 =", res);
-        setTIMESWords(res.words);
-      })
-      .catch((err) => {
-    console.error("❌ TIMES 크롤링 실패:", err);
+    setBBCWords(data.words);
   })
-      .finally(() => {
-        setLoadingTimes(false);
-      });
-  }, [refreshKey]);
+  // test
+
+  const handleOpen = () => {
+    if (!isLoggedIn) {
+      setShowPopup(true);   // 로그인 안 돼 있으면 팝업만 열기
+    } else {
+
+    }
+  };
+
+
+  const compareBookmark = () => {
+
+  }
+
+  useEffect(() => {
+    setIsLoggedIn(user != null);
+  }, [user]);
+
+  // useEffect(() => {
+  //   setLoadingTimes(true);
+  //   setLoadingBBC(true);
+  //   extractWord(BBC, user?.level || "초급", user?.purpose || "토익")
+  //     .then((res) => {
+  //       console.log("BBC 응답 =", res);
+  //       setBBCWords(res.words); 
+          // patchBookamrk(user.id || 1).then((res) => {
+          //   console.log(`user id = ${user.id} // res = ${res}`);
+          // }).catch((err) => {
+          //   console.error(`❌ occurred error!! ${err}`);
+          // })
+  //     })
+  //     .catch((err) => {
+  //       console.error(`BBC 크롤링 실패 : ${err}`);
+  //     })
+  //     .finally(() => {
+  //       setLoadingBBC(false);
+  //     });
+
+  //   extractWord(TIMES, user?.level || "초급", user?.purpose || "토익")
+  //     .then((res) => {
+  //       console.log("TIMES 응답 =", res);
+  //       setTIMESWords(res.words);
+  //     })
+  //     .catch((err) => {
+  //   console.error("❌ TIMES 크롤링 실패:", err);
+  // })
+  //     .finally(() => {
+  //       setLoadingTimes(false);
+  //     });
+  // }, [refreshKey]);
+
 
   const renderWordCard = (words, index, setIndex, title, link, loading) => (
     <div style={{ marginBottom: "50px" }}>
@@ -66,9 +103,13 @@ const MainPage = (refreshKey) => {
                 <h2 style={{ margin: "0 10px" }}>{words[index].word}</h2>
                 <p style={{ marginTop: "30px" }}>{words[index].ps}</p>
               </div>
-              <h3 style={{ marginRight: "20px" }}>
+
+              <h3 style={{ marginRight: "20px" }} onClick={() => {
+                handleOpen();
+              }}>
                 <BookmarkAddOutlined />
               </h3>
+
             </div>
 
             <div
@@ -95,6 +136,7 @@ const MainPage = (refreshKey) => {
                   background: "white",
                   padding: "15px",
                 }}
+
                 onClick={() => {
                   if (index === 0) return;
                   setIndex(index - 1);
@@ -125,6 +167,7 @@ const MainPage = (refreshKey) => {
           <p>데이터 없음</p>
         )}
       </div>
+      {showPopup && <Popup onClose={() => setShowPopup(false)} />}
     </div>
   );
 
