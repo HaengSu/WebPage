@@ -7,7 +7,7 @@ const db = require('../db');
 router.post('/auth/login', async (req, res) => {
   const { email, password } = req.body;
 
-  if (email == false || password == false) {
+  if (!email || !password) {
     return res.status(400).json({ message: '이메일과 비밀번호를 입력하세요.' });
   }
 
@@ -32,8 +32,17 @@ router.post('/auth/login', async (req, res) => {
         return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
       }
 
+      req.session.user = {
+        id: user.id,
+        email: user.email,
+        nickname: user.nickname,
+        purpose: user.purpose,
+        level: user.level
+      };
+
       return res.status(200).json({
         message: '로그인 성공', user: {
+          id: user.id,
           email: user.email,
           nickname: user.nickname,
           purpose: user.purpose,
@@ -47,5 +56,20 @@ router.post('/auth/login', async (req, res) => {
   }
 });
 
+router.get("/auth/check", (req, res) => {
+  if (req.session.user) {
+    return res.json({ loggedIn: true, user: req.session.user });
+  } else {
+    return res.json({ loggedIn: false });
+  }
+});
+
+router.post("/auth/logout", (req, res) => {
+  req.session.destroy(err => {
+    if (err) return res.status(500).json({ message: "로그아웃 실패" });
+    res.clearCookie("user_sid");  // 쿠키 삭제
+    return res.json({ message: "로그아웃 성공" });
+  });
+});
 
 module.exports = router;
