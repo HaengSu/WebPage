@@ -56,7 +56,7 @@ const MainPage = (refreshKey) => {
   //       console.log("BBC 응답 =", res);
   //       setBBCWords(res.words); 
           // patchBookamrk(user.id || 1).then((res) => {
-          //   console.log(`user id = ${user.id} // res = ${res}`);
+          //   console.log(`user id = ${user.id}`,res.bookmarks);
           // }).catch((err) => {
           //   console.error(`❌ occurred error!! ${err}`);
           // })
@@ -105,7 +105,11 @@ const MainPage = (refreshKey) => {
               </div>
 
               <h3 style={{ marginRight: "20px" }} onClick={() => {
-                handleOpen();
+                if(user == null) {
+                  handleOpen();
+                } else {
+
+                }
               }}>
                 <BookmarkAddOutlined />
               </h3>

@@ -5,6 +5,7 @@ import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../UserContext";
 import { updateUserLevel } from "../api/userApi";
+import {logoutUser} from '../api/AuthApi';
 
 
 
@@ -100,9 +101,11 @@ function MainHeader({ onRefresh }) {
                         <Button
                             onClick={() => {
                                 if (user) {
-                                    // 로그아웃 처리
-                                    setUser(null);
-                                    navigate('/');
+                                    logoutUser().then(() => {
+                                        console.log(`logout success!`);
+                                        setUser(null);
+                                        navigate('/');
+                                    })
                                 } else {
                                     // 회원가입 페이지로 이동
                                     navigate('/signup');
