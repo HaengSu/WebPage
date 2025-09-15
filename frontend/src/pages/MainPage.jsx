@@ -1,7 +1,7 @@
-import { BookmarkAddOutlined } from "@mui/icons-material";
+import { BookmarkAddedOutlined, BookmarkAddOutlined } from "@mui/icons-material";
 import { useState, useEffect } from "react";
-import { extractWord } from "../api/WordApi";
-import { patchBookamrk } from "../api/BookmarkApi";
+import { extractWord, saveWord } from "../api/WordApi";
+import { patchBookamrk, updateBookamrk } from "../api/BookmarkApi";
 import { useUser } from "../UserContext";
 import { Button, CircularProgress } from "@mui/material";
 import data from "../component/words.json"
@@ -14,6 +14,8 @@ const MainPage = (refreshKey) => {
   const [TIMESIndex, setTIMESIndex] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [bookmarkWords , setBookmarkWords] = useState([]);
 
   // const [loadingBBC, setLoadingBBC] = useState(true);
   // const [loadingTimes, setLoadingTimes] = useState(true);
@@ -55,11 +57,11 @@ const MainPage = (refreshKey) => {
   //     .then((res) => {
   //       console.log("BBC 응답 =", res);
   //       setBBCWords(res.words); 
-          // patchBookamrk(user.id || 1).then((res) => {
-          //   console.log(`user id = ${user.id}`,res.bookmarks);
-          // }).catch((err) => {
-          //   console.error(`❌ occurred error!! ${err}`);
-          // })
+  // patchBookamrk(user.id || 1).then((res) => {
+  //   console.log(`user id = ${user.id}`,res.bookmarks);
+  // }).catch((err) => {
+  //   console.error(`❌ occurred error!! ${err}`);
+  // })
   //     })
   //     .catch((err) => {
   //       console.error(`BBC 크롤링 실패 : ${err}`);
@@ -80,6 +82,25 @@ const MainPage = (refreshKey) => {
   //       setLoadingTimes(false);
   //     });
   // }, [refreshKey]);
+
+  async function hadleSaveWord(word) {
+    try {
+      const resSaveWord = await saveWord(word);
+      console.log('resSaveWord = ', resSaveWord);
+
+      const wordId = resSaveWord.data.id;
+      const bookmarkInfo = {
+        user_id : user.id,
+        word_id : wordId
+      }
+      const resBookmarkWord = await updateBookamrk(bookmarkInfo)
+      console.log('resBookmarkWord =>',resBookmarkWord);
+      return true;
+    } catch (error) {
+      console.error(`❌ occurred error!! `,error);
+      return false;
+    }
+  }
 
 
   const renderWordCard = (words, index, setIndex, title, link, loading) => (
@@ -104,14 +125,30 @@ const MainPage = (refreshKey) => {
                 <p style={{ marginTop: "30px" }}>{words[index].ps}</p>
               </div>
 
-              <h3 style={{ marginRight: "20px" }} onClick={() => {
-                if(user == null) {
+              <h3 style={{ marginRight: "20px" }} onClick={ async () => {
+                if (user == null) {
                   handleOpen();
                 } else {
+                  const word = {
+                    level: `${user.level}`,
+                    source: `${title.replace(/ /g, "")}`,
+                    word: `${words[index].word}`,
+                    ps: `${words[index].ps}`,
+                    meaning: `${words[index].meanings.join(",")}`
+                  }
 
+                  const res = await hadleSaveWord(word);
+
+                  if(res == true) {
+                    setIsBookmarked(true);
+                    alert('북마크 저장에 성공하였습니다.');
+                  } else {
+                    alert('북마크 저장에 실패하였습니다.');
+                  }
                 }
               }}>
-                <BookmarkAddOutlined />
+                {isBookmarked ? <BookmarkAddedOutlined/>: <BookmarkAddOutlined />}
+              
               </h3>
 
             </div>

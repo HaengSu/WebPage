@@ -7,7 +7,7 @@ export function getWord(wordId) {
     });
 }
 
-export function saveWord(word) {
+export async function saveWord(word) {
     return request('/api/v1/words', {
         method : 'POST',
         body : JSON.stringify(word)
