@@ -55,50 +55,66 @@ router.get('/words/:word_id', (req, res) => {
 // POST
 
 router.post('/words', (req, res) => {
-    const { level, source, word, ps, meaning } = req.body;
+  const { level, source, word, ps, meaning } = req.body;
 
-    try {
-
-        const sql = 'INSERT INTO words (level, source, word, ps, meaning) VALUES (?,?,?,?,?)';
-
-        db.query(sql, [level, source, word, ps, meaning], (err, result) => {
-            if (err) {
-                console.error('❌ post word error:', err);
-                return res.status(500).json({
-                    success: false,
-                    data: null,
-                    error: { code: 'SERVER_ERROR', message: '서버 에러' }
-                });
-            }
-
-            if (result.affectedRows  === 0) {
-                return res.status(404).json({
-                    success: false,
-                    data: null,
-                    error: { code: 'INSERT_FAILED', message: '단어 저장 실패' }
-                });
-            }
-
-            const word = result[0];
-
-            return res.status(200).json({
-                success: true,
-                data: {
-                    id: result.insertId,
-                    level,
-                    source,
-                    word,
-                    ps,
-                    meaning
-                },
-                error: null,
-                message: '단어가 성공적으로 저장됨'
-            });
+  try {
+    // 1. 먼저 기존 데이터 있는지 확인
+    const checkSql = 'SELECT word FROM words WHERE word = ?';
+    db.query(checkSql, [word, source, level], (err, rows) => {
+      if (err) {
+        console.error('❌ select error:', err);
+        return res.status(500).json({
+          success: false,
+          data: null,
+          error: { code: 'SERVER_ERROR', message: '서버 에러' }
         });
+      }
 
-    } catch (error) {
-        console.error('try catch error', error);
-    }
+      if (rows.length > 0) {
+        //  이미 존재 → 기존 데이터 반환
+        return res.status(200).json({
+          success: true,
+          data: rows[0], // 첫 번째 결과 반환
+          error: null,
+          message: '이미 존재하는 단어'
+        });
+      }
+
+      // 2. 없으면 INSERT 실행
+      const insertSql = 'INSERT INTO words (level, source, word, ps, meaning) VALUES (?,?,?,?,?)';
+      db.query(insertSql, [level, source, word, ps, meaning], (err, result) => {
+        if (err) {
+          console.error('❌ insert error:', err);
+          return res.status(500).json({
+            success: false,
+            data: null,
+            error: { code: 'SERVER_ERROR', message: '서버 에러' }
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          data: {
+            id: result.insertId, // 새로 생성된 id
+            level,
+            source,
+            word,
+            ps,
+            meaning
+          },
+          error: null,
+          message: '단어가 성공적으로 저장됨'
+        });
+      });
+    });
+  } catch (error) {
+    console.error('try catch error', error);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      error: { code: 'SERVER_ERROR', message: '서버 에러' }
+    });
+  }
 });
 
 // DELETE
