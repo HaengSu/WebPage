@@ -15,7 +15,8 @@ const MainPage = (refreshKey) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [bookmarkWords , setBookmarkWords] = useState([]);
+  const [bookmarkWords, setBookmarkWords] = useState([]);
+  const [localBookmarks, setLocalBookmarks] = useState([]);
 
   // const [loadingBBC, setLoadingBBC] = useState(true);
   // const [loadingTimes, setLoadingTimes] = useState(true);
@@ -86,20 +87,32 @@ const MainPage = (refreshKey) => {
   async function hadleSaveWord(word) {
     try {
       const resSaveWord = await saveWord(word);
-      console.log('resSaveWord = ', resSaveWord);
+      console.log('resSaveWord = ', resSaveWord.data);
 
       const wordId = resSaveWord.data.id;
       const bookmarkInfo = {
-        user_id : user.id,
-        word_id : wordId
+        user_id: user.id,
+        word_id: wordId
       }
       const resBookmarkWord = await updateBookamrk(bookmarkInfo)
-      console.log('resBookmarkWord =>',resBookmarkWord);
-      return true;
+
+      setLocalBookmarks(word.word);
+
+      return {
+        success: true,
+        message: resBookmarkWord.message
+      };
     } catch (error) {
-      console.error(`❌ occurred error!! `,error);
-      return false;
+      console.error(`❌ occurred error!! `, error);
+      return {
+        success : false,
+        message : error.message
+      };
     }
+  }
+
+  function handleBookmarks() {
+    
   }
 
 
@@ -125,7 +138,7 @@ const MainPage = (refreshKey) => {
                 <p style={{ marginTop: "30px" }}>{words[index].ps}</p>
               </div>
 
-              <h3 style={{ marginRight: "20px" }} onClick={ async () => {
+              <h3 style={{ marginRight: "20px" }} onClick={async () => {
                 if (user == null) {
                   handleOpen();
                 } else {
@@ -138,17 +151,18 @@ const MainPage = (refreshKey) => {
                   }
 
                   const res = await hadleSaveWord(word);
-
-                  if(res == true) {
+                  console.log('res =>',res);
+                  if (res.success == true) {
                     setIsBookmarked(true);
-                    alert('북마크 저장에 성공하였습니다.');
+                    alert('북마크에 추가되었습니다.');
+
                   } else {
-                    alert('북마크 저장에 실패하였습니다.');
+                    alert(`${res.message}`);
                   }
                 }
               }}>
-                {isBookmarked ? <BookmarkAddedOutlined/>: <BookmarkAddOutlined />}
-              
+                {isBookmarked ? <BookmarkAddedOutlined /> : <BookmarkAddOutlined />}
+
               </h3>
 
             </div>
@@ -181,6 +195,8 @@ const MainPage = (refreshKey) => {
                 onClick={() => {
                   if (index === 0) return;
                   setIndex(index - 1);
+
+                  handleBookmarks();
                 }}
               >
                 이전
