@@ -15,7 +15,7 @@ const MainPage = (refreshKey) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [bookmarkWords, setBookmarkWords] = useState([]);
+  // const [bookmarkWords, setBookmarkWords] = useState([]);
   const [localBookmarks, setLocalBookmarks] = useState([]);
 
   // const [loadingBBC, setLoadingBBC] = useState(true);
@@ -105,14 +105,18 @@ const MainPage = (refreshKey) => {
     } catch (error) {
       console.error(`❌ occurred error!! `, error);
       return {
-        success : false,
-        message : error.message
+        success: false,
+        message: error.message
       };
     }
   }
 
-  function handleBookmarks() {
-    
+  // 현재 단어가 북마크에 저장된 단어인지 확인하기 위함
+  function handleBookmarks(currentWord) {
+    const isInculde = localBookmarks.includes(currentWord)
+    console.log('currentWord / isInculde =>', currentWord, isInculde);
+
+    return isInculde;
   }
 
 
@@ -151,7 +155,7 @@ const MainPage = (refreshKey) => {
                   }
 
                   const res = await hadleSaveWord(word);
-                  console.log('res =>',res);
+                  console.log('res =>', res);
                   if (res.success == true) {
                     setIsBookmarked(true);
                     alert('북마크에 추가되었습니다.');
@@ -196,7 +200,8 @@ const MainPage = (refreshKey) => {
                   if (index === 0) return;
                   setIndex(index - 1);
 
-                  handleBookmarks();
+                  const res = handleBookmarks(words[index - 1].word);
+                  setIsBookmarked(res);
                 }}
               >
                 이전
@@ -214,6 +219,10 @@ const MainPage = (refreshKey) => {
                 onClick={() => {
                   if (index === words.length - 1) return;
                   setIndex(index + 1);
+
+                   const res = handleBookmarks(words[index + 1].word);
+                  setIsBookmarked(res);
+
                 }}
               >
                 다음
