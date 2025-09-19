@@ -5,53 +5,6 @@ const db = require('../db');
 
 // GET
 
-router.get('/words/:word_id', (req, res) => {
-    const { word_id } = req.params;
-
-    try {
-
-        const sql = 'SELECT * FROM words WHERE id = ?'
-
-        db.query(sql, [word_id], (err, result) => {
-            if (err) {
-                console.error('❌ get word error:', err);
-                return res.status(500).json({
-                    success: false,
-                    data: null,
-                    error: { code: 'SERVER_ERROR', message: '서버 에러' }
-                });
-            }
-
-            if (result.length === 0) {
-                return res.status(404).json({
-                    success: false,
-                    data: null,
-                    error: { code: 'WORD_NOT_FOUND', message: '해당 단어 없음' }
-                });
-            }
-
-            const word = result[0];
-
-            return res.status(200).json({
-                success: true,
-                data: {
-                    id: word.id,
-                    level: word.level,
-                    source: word.source,
-                    word: word.word,
-                    ps: word.ps,
-                    meaning: word.meaning
-                },
-                error: null,
-                message: '단어 정보 있음'
-            });
-        });
-
-    } catch (error) {
-        console.error('try catch error', error);
-    }
-});
-
 // POST
 
 router.post('/words', (req, res) => {
@@ -59,10 +12,10 @@ router.post('/words', (req, res) => {
 
   try {
     // 1. 먼저 기존 데이터 있는지 확인
-    const checkSql = 'SELECT word FROM words WHERE word = ?';
+    const checkSql = 'SELECT * FROM words WHERE word = ?';
     db.query(checkSql, [word, source, level], (err, rows) => {
       if (err) {
-        console.error('❌ select error:', err);
+        console.error('❌ word post error:', err);
         return res.status(500).json({
           success: false,
           data: null,
@@ -115,6 +68,45 @@ router.post('/words', (req, res) => {
       error: { code: 'SERVER_ERROR', message: '서버 에러' }
     });
   }
+});
+
+router.post('/words/byIds', (req, res) => {
+    const { ids } = req.body;
+
+    console.log('ids =>',ids);
+    try {
+
+        const sql = 'SELECT * FROM words WHERE id IN (?)'
+
+        db.query(sql, [ids], (err, result) => {
+            if (err) {
+                console.error('❌ get word error:', err);
+                return res.status(500).json({
+                    success: false,
+                    data: null,
+                    error: { code: 'SERVER_ERROR', message: '서버 에러' }
+                });
+            }
+
+            if (result.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    data: null,
+                    error: { code: 'WORD_NOT_FOUND', message: '해당 단어 없음' }
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                data: result,
+                error: null,
+                message: '단어 정보 있음'
+            });
+        });
+
+    } catch (error) {
+        console.error('try catch error', error);
+    }
 });
 
 // DELETE
