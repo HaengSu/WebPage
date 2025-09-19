@@ -14,7 +14,7 @@ export function patchBookamrk(userId) {
 }
 
 export function updateBookamrk(bookmark) {
-    return request('/api/v1/bookmarks', {
+    return request('/api/v1/bookmarks/', {
         method : 'POST',
         body : JSON.stringify(bookmark)
     });
